@@ -2,6 +2,12 @@
 
 Where to?
 
+## Install
+
+```
+yarn add react-whereto
+```
+
 ## Use
 
 Make a dispatcher
@@ -85,6 +91,7 @@ export App;
 ## Example
 
 ```
+yarn install
 yarn run example
 ```
 
