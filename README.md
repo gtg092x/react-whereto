@@ -12,7 +12,7 @@ yarn add react-whereto
 
 Make a dispatcher
 
-```
+```js
 // my-dispatcher.js
 import { RouteDispatcher } from 'react-whereto'
 
@@ -29,7 +29,7 @@ export const routeDispatcher = new RouteDispatcher()
 
 Wrap it with whatever you like (probably a redux dispatcher)
 
-```
+```js
 // my-loader.js
 import { dispatchLoader } from 'react-whereto'
 import { createStore, applyMiddelware } from 'redux';
@@ -50,7 +50,7 @@ locationHandler('/hello/bob').then(() => {
 
 Or let it load automatically with every route change.
 
-```
+```js
 // my-app.js
 import React from 'react';
 import { Provider } from 'react-redux';
