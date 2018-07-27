@@ -1,6 +1,13 @@
 import { matchPath } from 'react-router';
 import QS from 'qs';
-import { parseRoute, isFunction } from './utils';
+import { parseRoute, isFunction, isString } from './utils';
+
+const tryParseQuery = (query) => {
+  if (!isString(query)) {
+    return query;
+  }
+  return QS.parse(query.replace(/^\?/, ''));
+};
 
 export default class Dispatcher {
   constructor() {
@@ -11,7 +18,10 @@ export default class Dispatcher {
     return dispatch => Promise.all(validRoutes.map((route) => {
       const { query = '', match, ...rest } = route;
       const { ...restMatch } = match;
-      const action = isFunction(route.action) ? route.action({ ...restMatch, ...rest, query: QS.parse(query.replace(/^\?/, '')) }) : route.action;
+      const parsedQuery = tryParseQuery(query);
+      const action = isFunction(route.action)
+        ? route.action({ ...restMatch, ...rest, query: parsedQuery })
+        : route.action;
       return dispatch(action);
     }));
   }
