@@ -9,8 +9,8 @@ export default class Dispatcher {
   getThunkForValidRoutes(location) {
     const validRoutes = this.getValidRoutesWithMatch(location);
     return dispatch => Promise.all(validRoutes.map((route) => {
-      const { match, ...rest } = route;
-      const { query = '', ...restMatch } = match;
+      const { query = '', match, ...rest } = route;
+      const { ...restMatch } = match;
       const action = isFunction(route.action) ? route.action({ ...restMatch, ...rest, query: QS.parse(query.replace(/^\?/, '')) }) : route.action;
       return dispatch(action);
     }));
