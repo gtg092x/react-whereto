@@ -13,14 +13,14 @@ export default class Dispatcher {
   constructor() {
     this.routes = [];
   }
-  getThunkForValidRoutes(location) {
+  getThunkForValidRoutes(location, lastLocation) {
     const validRoutes = this.getValidRoutesWithMatch(location);
     return dispatch => Promise.all(validRoutes.map((route) => {
       const { query = '', match, ...rest } = route;
       const { ...restMatch } = match;
       const parsedQuery = tryParseQuery(query);
       const action = isFunction(route.action)
-        ? route.action({ ...restMatch, ...rest, query: parsedQuery })
+        ? route.action({ ...restMatch, ...rest, query: parsedQuery }, lastLocation)
         : route.action;
       return dispatch(action);
     }));

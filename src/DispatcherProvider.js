@@ -23,7 +23,7 @@ class DispatcherProviderBase extends React.Component {
   historyUpdate = () => {
     const { location } = this.props.history;
     if (!isEqual(location, this.lastLocation)) {
-      this.props.dispatcher.getThunkForValidRoutes(location)(this.getDispatch());
+      this.props.dispatcher.getThunkForValidRoutes(location, this.lastLocation)(this.getDispatch());
     }
     this.lastLocation = { ...location };
   };
