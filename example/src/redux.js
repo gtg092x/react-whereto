@@ -9,7 +9,7 @@ const reducers = combineReducers({
 export default function createApStore (state, extras = {}) {
 
   const middleware = [
-    logger,
+    // logger,
     thunk.withExtraArgument(extras),
   ];
 
