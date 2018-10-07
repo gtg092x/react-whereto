@@ -20,12 +20,11 @@ class DispatcherProviderBase extends React.Component {
   getStore = () => this.props.store || this.context.store || {};
   getDispatch = () => this.props.dispatch || (this.getStore().dispatch);
 
-  historyUpdate = () => {
+  historyUpdate = (prevLocation) => {
     const { location } = this.props.history;
-    if (!isEqual(location, this.lastLocation)) {
-      this.props.dispatcher.getThunkForValidRoutes(location, this.lastLocation)(this.getDispatch());
+    if (!isEqual(location, prevLocation)) {
+      this.props.dispatcher.getThunkForValidRoutes(location, prevLocation)(this.getDispatch());
     }
-    this.lastLocation = { ...location };
   };
   componentWillUnmount() {
     if (this.unsubHistory) {

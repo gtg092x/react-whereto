@@ -25,7 +25,7 @@ export const routeDispatcher = new RouteDispatcher()
   .route('/', { strict: true, exact: true }, hiMom('foo'))
   .route('/one', { strict: true, exact: true }, { type: 'one' })
   .route('strict!/two', { strict: true, exact: true }, { type: 'two' })
-  .route('/user/:id', ({ params: { id }, query }) => handleLoad(id, query));
+  .route('/user/:id', ({ params: { id }, search }) => handleLoad(id, search));
 
 class MyRichComponent extends React.Component {
   render() {

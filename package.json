@@ -1,6 +1,6 @@
 {
   "name": "react-whereto",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
     "clean": "rimraf lib",
     "test": "cross-env BABEL_ENV=commonjs mocha test/index --compilers js:@babel/register --recursive",
@@ -16,7 +16,6 @@
   "main": "lib/index.js",
   "dependencies": {
     "lodash.isequal": "^4.5.0",
-    "qs": ">=4.0.0",
     "react-router": ">=3.0.0"
   },
   "files": [

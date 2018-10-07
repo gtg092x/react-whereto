@@ -1,44 +1,30 @@
 import { matchPath } from 'react-router';
-import QS from 'qs';
-import { parseRoute, isFunction, isString } from './utils';
-
-const tryParseQuery = (query) => {
-  if (!isString(query)) {
-    return query;
-  }
-  return QS.parse(query.replace(/^\?/, ''));
-};
+import { parseRoute, isFunction } from './utils';
 
 export default class Dispatcher {
   constructor() {
     this.routes = [];
   }
   getThunkForValidRoutes(location, lastLocation) {
-    const validRoutes = this.getValidRoutesWithMatch(location);
+    const validRoutes = this.getValidRoutesWithMatch(location, lastLocation);
     return dispatch => Promise.all(validRoutes.map((route) => {
-      const { query = '', match, ...rest } = route;
-      const { ...restMatch } = match;
-      const parsedQuery = tryParseQuery(query);
       const action = isFunction(route.action)
-        ? route.action({ ...restMatch, ...rest, query: parsedQuery }, lastLocation)
+        ? route.action({
+          ...location,
+          ...route.match,
+        }, lastLocation ? {
+          ...lastLocation,
+          ...(route.lastMatch ? route.lastMatch : {}),
+        } : null)
         : route.action;
       return dispatch(action);
     }));
   }
-  getValidRoutesWithMatch(location) {
-    const {
-      pathname,
-      hash = '',
-      search = '',
-      query,
-    } = location;
-    const queryParse = query || (search && QS.parse(search.replace(/^\?/, ''))) || {};
-    const hashParse = hash ? QS.parse(hash.replace(/^#/, '')) : {};
+  getValidRoutesWithMatch(location, lastLocation) {
     return this.routes.map(route => ({
       ...route,
-      match: matchPath(pathname, route),
-      query: queryParse,
-      hash: hashParse,
+      match: matchPath(location.pathname, route),
+      lastMatch: lastLocation ? matchPath(lastLocation.pathname, route) : null,
     })).filter(route => route.match);
   }
   route(path, ...rest) {
